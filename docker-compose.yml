@@ -1,0 +1,14 @@
+services:
+  api:
+    build: ./
+    ports:
+      - "8082:3000"             
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-init-scripts:/docker-entrypoint-initdb.d # Montar el script de inicialización
