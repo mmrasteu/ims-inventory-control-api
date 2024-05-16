@@ -3,7 +3,7 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
-var InventorytSchema = Schema({
+var InventorySchema = Schema({
     id_product: Number,
     stock: Number,
     warning_stock: Number,

@@ -1,5 +1,5 @@
 // Nombre de la base de datos
-var dbName = 'inventory_db';
+var dbName = process.env.MONGODB_DB;
 
 // Nombre de la colección
 var collectionName = 'inventory';

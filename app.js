@@ -11,8 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configurar la conexión a la base de datos MongoDB
+const MONGODB_URI = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(MONGODB_URI)
         .then(() => {
             console.log("Conexion a BBDD establecida satisfactoriamente...")
 
@@ -52,7 +53,7 @@ app.use((error, req, res, next) => {
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
+const API_PORT = process.env.API_PORT || 3000;
+app.listen(API_PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${API_PORT}`);
 });
