@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var InventorySchema = Schema({
     name: { type: String, unique: true },
+    slug: { type: String, unique: true },
     description:String,
     products:{
         sku_code: String,

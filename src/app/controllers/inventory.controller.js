@@ -1,5 +1,6 @@
 'use strict'
 var Inventory = require('../models/inventory.model')
+const {slugString, isASlug} = require('../common/utilities')
 
 var controller = {
     storeInventory: async function(req, res) {
@@ -15,9 +16,10 @@ var controller = {
                 return res.status(400).json({ error: 'El campo "description" debe ser texto' });
             }
     
-            inventory.name = params.name;
-            inventory.description = params.description;
-            inventory.products = {};
+            inventory.name          = params.name;
+            inventory.slug          = slugString(params.name);
+            inventory.description   = params.description;
+            inventory.products      = {};
     
             const inventoryStored = await inventory.save();
             
@@ -32,16 +34,20 @@ var controller = {
     },
     getInventory: async function(req, res) {
         try {
-            const inventoryName = req.params.name;
-    
-            if (!inventoryName) {
-                return res.status(400).send({ message: 'Nombre del inventario no proporcionado' });
+            const inventorySlug = req.params.slug;
+
+            if (!isASlug(inventorySlug)) {
+                return res.status(400).send({ message: `El parametro no es un slug` });
             }
     
-            const inventory = await Inventory.findOne({ name: inventoryName });
+            if (!inventorySlug) {
+                return res.status(400).send({ message: 'Slug del inventario no proporcionado' });
+            }
+    
+            const inventory = await Inventory.findOne({ slug: inventorySlug });
     
             if (!inventory) {
-                return res.status(404).send({ message: `No se ha encontrado el inventario ${inventoryName}` });
+                return res.status(404).send({ message: `No se ha encontrado el inventario` });
             }
     
             return res.status(200).send({ inventory });

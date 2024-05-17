@@ -9,8 +9,8 @@ var router = express.Router();
 
 // Rutas
 router.post('/inventory', InventoryController.storeInventory);
-router.get('/inventory/:name', InventoryController.getInventory);
+router.get('/inventory/:slug', InventoryController.getInventory);
 router.get('/inventories', InventoryController.getInventories);
-//router.post('/inventory/add-product', InventoryController.addProduct);
+//router.post('/inventory/add-product/:', InventoryController.addProduct);
 
 module.exports = router;
