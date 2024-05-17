@@ -3,12 +3,12 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
-var InventorySchema = Schema({
-    id_product: Number,
+var ProductsSchema = Schema({
+    sku_code: String,
     stock: Number,
     warning_stock: Number,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Inventory', InventorySchema)
+module.exports = mongoose.model('Products', ProductsSchema)

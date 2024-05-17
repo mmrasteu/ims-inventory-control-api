@@ -11,19 +11,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configurar la conexión a la base de datos MongoDB
-const MONGODB_URI = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`
+const MONGODB_URI = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`;
+const options = {
+  user: process.env.MONGODB_USERNAME,
+  pass: process.env.MONGODB_PASSWORD
+};
+
 mongoose.Promise = global.Promise;
-mongoose.connect(MONGODB_URI)
-        .then(() => {
-            console.log("Conexion a BBDD establecida satisfactoriamente...")
+mongoose.connect(MONGODB_URI, options)
+  .then(() => {
+    console.log("Conexión a BBDD establecida satisfactoriamente...");
 
-            // Creacion del servidor
-            app.listen(port, () => {
-                console.log("Servidor corriendo correctamente en la url: localhost:3700");
-            });
-        })
-        .catch(err => console.error(err));
-
+    // Iniciar el servidor
+    const API_PORT = process.env.API_PORT || 3000;
+    app.listen(API_PORT, () => {
+      console.log(`Servidor escuchando en el puerto ${API_PORT}`);
+    });
+  })
+  .catch(err => console.error(err));
 
 // Definir las rutas de la API
 app.get('/api/status', (req,res) => {
@@ -32,8 +37,8 @@ app.get('/api/status', (req,res) => {
       "status": 200
   });
 });
-const inventoryRoutes = require('./routes/inventoryRoutes');
-app.use('/api/inventory', inventoryRoutes);
+const productsRoutes = require('./routes/productsRoute');
+app.use('/api/inventory', productsRoutes);
 
 // Manejar rutas no encontradas
 app.use((req, res, next) => {
@@ -50,10 +55,4 @@ app.use((error, req, res, next) => {
       message: error.message
     }
   });
-});
-
-// Iniciar el servidor
-const API_PORT = process.env.API_PORT || 3000;
-app.listen(API_PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${API_PORT}`);
 });
