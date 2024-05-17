@@ -51,9 +51,9 @@ var controller = {
         }
     },
     getInventories: function(req,res){
-        Inventory.find({}).sort('-created_at').exec()
+        Inventory.find({}).sort('created_at').exec()
         .then((inventories) => {
-            if(!inventories){
+            if(!inventories || Object.keys(inventories).length === 0){
                 return res.status(404).send({message:"No hay inventarios"});
             }
             res.status(200).send(inventories);
