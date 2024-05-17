@@ -1,44 +1,40 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
 // Inicializar Express
 const app = express();
 
+//CORS
+
 // Configurar el middleware body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configurar la conexión a la base de datos MongoDB
-const MONGODB_URI = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`;
-const options = {
-  user: process.env.MONGODB_USERNAME,
-  pass: process.env.MONGODB_PASSWORD
-};
+const db = require("./app/models");
 
-mongoose.Promise = global.Promise;
-mongoose.connect(MONGODB_URI, options)
+console.log(db.url);
+
+db.mongoose
+  .connect(db.url)
   .then(() => {
-    console.log("Conexión a BBDD establecida satisfactoriamente...");
-
-    // Iniciar el servidor
-    const API_PORT = process.env.API_PORT || 3000;
-    app.listen(API_PORT, () => {
-      console.log(`Servidor escuchando en el puerto ${API_PORT}`);
-    });
+    console.log("Conexión realizada con éxito");
   })
-  .catch(err => console.error(err));
+  .catch(err => {
+    console.log("No se pudo conectar a la base de datos", err);
+    process.exit();
+  });
 
 // Definir las rutas de la API
 app.get('/api/status', (req,res) => {
   res.status(200).send({
-      "message": "API Online",
+      "message": "API corriendo...",
       "status": 200
   });
 });
-const productsRoutes = require('./routes/productsRoute');
-app.use('/api/inventory', productsRoutes);
+const inventoryRoutes = require('./app/routes/inventory.routes');
+app.use('/api', inventoryRoutes);
 
 // Manejar rutas no encontradas
 app.use((req, res, next) => {
@@ -55,4 +51,10 @@ app.use((error, req, res, next) => {
       message: error.message
     }
   });
+});
+
+// Iniciar el servidor
+const PORT = process.env.NODE_DOCKER_PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en  ${PORT}.`);
 });

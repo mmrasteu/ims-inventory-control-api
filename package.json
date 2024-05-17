@@ -1,29 +1,5 @@
 {
-  "name": "ims-inventory-control-api",
-  "version": "1.0.0",
-  "description": "Inventory control API manages product quantities, tracks entries and exits, updates inventory information, and integrates with other APIs for seamless inventory management",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mmrasteu/ims-inventory-control-api.git"
-  },
-  "author": "Miguel A.M. Rasteu",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mmrasteu/ims-inventory-control-api/issues"
-  },
-  "homepage": "https://github.com/mmrasteu/ims-inventory-control-api#readme",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.3.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
+    "cors": "^2.8.5"
   }
 }
